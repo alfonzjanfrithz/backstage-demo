@@ -37,7 +37,7 @@ integrations:
     - host: github.com
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
-      token: ${GITHUB_TOKEN}
+      token: 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
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
@@ -64,7 +64,12 @@ techdocs:
 
 auth:
   # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: 5a53ff347750beadbb58
+        clientSecret: 9de388e664398f225de23f7fc96ed355ec0b1972
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
@@ -76,7 +81,14 @@ catalog:
   rules:
     - allow: [Component, System, API, Resource, Location]
   locations:
+    - type: file
+      target: template.yaml # Backstage will expect the file to be in packages/backend/template.yaml
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    - type: file
+      target: ../../examples/create-react-app/template.yaml
+      rules:
+        - allow: [Template]
+    
     - type: file
       target: ../../examples/entities.yaml
 
