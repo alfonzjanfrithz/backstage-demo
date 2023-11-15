@@ -44,6 +44,17 @@ integrations:
     #   token: ${GHE_TOKEN}
 
 proxy:
+  endpoints:
+    '/argocd/api':
+      target: https://localhost:8080/api/v1
+      changeOrigin: true
+      # only if your argocd api has self-signed cert
+      secure: false
+      headers:
+        Cookie:
+          $env: ARGOCD_AUTH_TOKEN
+          # argocd.token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJuZXd1c2VyOmFwaUtleSIsIm5iZiI6MTY5OTk3MDc5NCwiaWF0IjoxNjk5OTcwNzk0LCJqdGkiOiIwY2IwOTdhNy1lNDdlLTQ5NWYtODNjZS02NmQ3MTExMjQyMmUifQ.bizOprEFw2COgJ4NvEVJUBsJNDHsUbE39NFn77VbxwY
+
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:
@@ -113,3 +124,13 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
+kubernetes:
+  serviceLocatorMethod: 'multiTenant'
+  clusterLocatorMethods:
+    - 'config'
+  clusters:
+    - url: http://127.0.0.1:9999
+      name: minikube
+      authProvider: 'serviceAccount'
+      #serviceAccountToken:
+      #  $env: K8S_MINIKUBE_TOKEN
